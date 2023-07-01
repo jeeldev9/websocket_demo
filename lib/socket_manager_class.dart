@@ -3,10 +3,9 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketManager {
   IO.Socket? socket;
-  String socketError="";
+  String socketError = "";
 
-
-   void connect(String serverUrl) {
+  void connect(String serverUrl) {
     try {
       socket = IO.io(serverUrl, <String, dynamic>{
         'transports': ['websocket'],
@@ -17,16 +16,13 @@ class SocketManager {
       socket?.on('disconnect', (_) => _onDisconnect());
       socket?.on('error', (data) => _onError(data));
 
-
-
       socket?.connect();
-    }catch(e){
-      socketError=e.toString();
+    } catch (e) {
+      socketError = e.toString();
     }
   }
 
   static void _onConnect(dynamic data) {
-
     if (kDebugMode) {
       print('Connected to Socket.io server!');
     }
@@ -51,7 +47,7 @@ class SocketManager {
     if (socket?.connected ?? false) {
       try {
         socket?.emit(eventName, data);
-      }catch(e){
+      } catch (e) {
         debugPrint(e.toString());
       }
     } else {
@@ -61,14 +57,13 @@ class SocketManager {
     }
   }
 
-   void disconnect() {
-     try {
-       if (socket?.connected ?? false) {
-         socket?.disconnect();
-       }
-     }catch(e){
-       socketError=e.toString();
-     }
-
+  void disconnect() {
+    try {
+      if (socket?.connected ?? false) {
+        socket?.disconnect();
+      }
+    } catch (e) {
+      socketError = e.toString();
+    }
   }
 }
